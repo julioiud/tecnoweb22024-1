@@ -1,5 +1,4 @@
 const app = require('./app')
-const dotenv = require('dotenv').config()
 
 app.set('port', process.env.PORT || 3000)
 

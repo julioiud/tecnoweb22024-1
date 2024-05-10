@@ -1,15 +1,18 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const dotenv = require('dotenv').config()
 
 const { mongoConn } = require('./databases/configuration')
-mongoConn()
+
 // middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
     origin: '*'
 }))
+
+mongoConn()
 
 const tipoProyecto = require('./routes/tipoProyecto')
 /*const estado = require('./routes/estado')
