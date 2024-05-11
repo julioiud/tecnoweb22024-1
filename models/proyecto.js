@@ -1,5 +1,5 @@
-const { Schema, model} = require('mongoose')
-const tipoProyecto = require('./tipoProyecto')
+/*const { Schema, model} = require('mongoose')
+
 
 const ProyectoSchema = Schema({
     numero : {
@@ -36,4 +36,4 @@ const ProyectoSchema = Schema({
     }
 })
 
-module.exports = model('Proyecto', ProyectoSchema)
+module.exports = model('Proyecto', ProyectoSchema)*/
