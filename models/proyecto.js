@@ -1,5 +1,4 @@
 const { Schema, model} = require('mongoose')
-const tipoProyecto = require('./tipoProyecto')
 
 const ProyectoSchema = Schema({
     numero : {
