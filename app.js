@@ -14,17 +14,17 @@ app.use(cors({
 
 mongoConn()
 
-const tipoProyecto = require('./routes/tipoProyecto')
-/*const estado = require('./routes/estado')
-const usuario = require('./routes/usuario')
-const marca = require('./routes/marca')
+const tipoProyectos = require('./routes/tipoProyecto')
+const clientes = require('./routes/cliente')
+const proyectos = require('./routes/proyecto')
+/*const marca = require('./routes/marca')
 const inventario = require('./routes/inventario')*/
 
 // middlewares
-app.use('/api/tiposproyectos', tipoProyecto)
-/*app.use('/api/estados', estado)
-app.use('/api/usuarios', usuario)
-app.use('/api/marcas', marca)
+app.use('/api/tiposproyectos', tipoProyectos)
+app.use('/api/clientes', clientes)
+app.use('/api/proyectos', proyectos)
+/*app.use('/api/marcas', marca)
 app.use('/api/inventarios', inventario)*/
 
 module.exports = app

@@ -1,54 +1,37 @@
-const Inventario = require('../models/inventario')
+const Proyecto = require('../models/proyecto')
 const { request, response} = require('express')
-const Usuario = require('../models/usuario')
-const Marca = require('../models/marca')
-const Estado = require('../models/estado')
-const TipoEquipo = require('../models/tipoEquipo')
+
+const TipoProyecto = require('../models/tipoProyecto')
+const Cliente = require('../models/cliente')
+
 // crear
-const createInventario= async (req = request, 
+const createProyecto = async (req = request, 
     res = response) => {
     try{
         const data = req.body
-        console.log(data)
-        const { usuario, marca, estado, tipoEquipo } = data;
-        //validando usuario
-        const usuarioDB = Usuario.findOne({
-            _id: usuario._id,
-            estado: true
-        })// select * from usuarios where _id=? and estado=true
-        if(!usuarioDB){
-            return res.status(400).json({msg: 'usuario invalido'})
-        }
-        // validando marca
-        const marcaDB = Marca.findOne({
-            _id: marca._id,
-            estado: true
-        })// select * from marcas where _id=? and estado=true
-        if(!marcaDB){
-            return res.status(400).json({msg: 'marca invalida'})
-        }
-        // validando estado
-        const estadoDB = Estado.findOne({
-            _id: estado._id,
-            estado: true
-        })// select * from estados where _id=? and estado=true
-        if(!estadoDB){
-           return res.status(400).json({msg: 'estado invalido'})
-        }
-        // validando tipo equipo
-        const tipoEquipoDB = TipoEquipo.findOne({
-            _id: tipoEquipo._id,
-            estado: true
-        })// select * from tipoequipos where _id=? and estado=true
-        if(!tipoEquipoDB){
-           return res.status(400).json({msg: 'estado invalido'})
-        }      
-        const inventario = new Inventario(data)
 
-        await inventario.save()
+        const { tipoProyecto, cliente } = data;
+     
+        const tipoProyectoDB = TipoProyecto.findOne({
+            _id: tipoProyecto._id
+        })// select * from tipoproyectos where _id=?
+        if(!tipoProyectoDB){
+            return res.status(400).json({msg: 'tipo proyecto invalido'})
+        }
+        const clienteDB = Cliente.findOne({
+            _id: cliente._id
+        })// select * from clientes where _id=?
+        if(!clienteDB){
+            return res.status(400).json({msg: 'cliente invalido'})
+        }
+
+        const proyecto = new Proyecto(data)
+
+        await proyecto.save()
         
-        return res.status(201).json(inventario)
-    }catch(e){
+        return res.status(201).json(proyecto)
+
+    } catch(e){
         return res.status(500).json({
             msg: 'Error general ' + e
         })
@@ -56,27 +39,19 @@ const createInventario= async (req = request,
 }
 
 //listar todos
-const getInventarios = async (req = request, 
+const getProyectos = async (req = request, 
     res = response) => {
         try{
-            const inventariosDB = await Inventario.find()//select * from inventarios
-                .populate({
-                    path: 'usuario',
-                    match: { estado: true }
+            //select * from proyectos
+            // join
+            const proyectosDB = await Proyecto.find()
+               .populate({
+                    path: 'tipoProyecto'
                 })
                 .populate({
-                    path: 'marca',
-                    match: { estado: true }
+                    path: 'cliente'
                 })
-                .populate({
-                    path: 'estado',
-                    match: { estado: true }
-                })
-                .populate({
-                    path: 'tipoEquipo',
-                    match: { estado: true }
-                })
-            return res.json(inventariosDB)
+            return res.json(proyectosDB)
         }catch(e){
             return res.status(500).json({
                 msg: 'Error general ' + e
@@ -84,15 +59,15 @@ const getInventarios = async (req = request,
         }
 }
 
-// actualizar inventario
-const updateInventarioByID = async (req = request, 
+// actualizar 
+const updateProyectoByID = async (req = request, 
     res = response) => {
-
     try{
         const { id } = req.params
         const data = req.body
-        const inventario  = await Inventario.findByIdAndUpdate(id, data, {new: true})
-        return res.status(201).json(inventario)
+        data.fechaActualizacion = new Date()
+        const proyecto  = await Proyecto.findByIdAndUpdate(id, data, {new: true})
+        return res.status(201).json(proyecto)
     }catch(e){
         console.log(e)
         return res.status(500).json({msj: 'Error'}) 
@@ -101,4 +76,8 @@ const updateInventarioByID = async (req = request,
 }
 
 
-module.exports = { createInventario, getInventarios, updateInventarioByID }
+module.exports = { 
+    createProyecto, 
+    getProyectos, 
+    updateProyectoByID 
+}

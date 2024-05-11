@@ -1,13 +1,20 @@
 const { Router } = require('express')
-const { createInventario, getInventarios} =
- require('../controllers/inventario')
+const { 
+    createProyecto, 
+    getProyectos, 
+    updateProyectoByID 
+} =
+ require('../controllers/proyecto')
 
 const router = Router()
 
 // crear
-router.post('/', createInventario)
+router.post('/', createProyecto)
 
 // consultar todos
-router.get('/', getInventarios)
+router.get('/', getProyectos)
+
+
+router.put('/:id', updateProyectoByID)
 
 module.exports = router;
